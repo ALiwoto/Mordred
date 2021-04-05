@@ -1,8 +1,8 @@
-package Players
+package players
 
 import (
 	"math/rand"
-	"packs"
+	"packs/operations"
 	"packs/security"
 	"strconv"
 	"time"
@@ -33,7 +33,7 @@ func GetMinimumUID(_index uint8) UID {
 // UID which is the last-uid of that specific index.
 // WARNING:	before calling this method, be sure that
 // the _client and _wotoConfig values are defined and are not nil.
-func getUID() (packs.RESULT, *UID){
+func getUID() (operations.RESULT, *UID){
 	rand.Seed(time.Now().UnixNano())
 	_w := security.GetWotoConfig()
 	_index := (rand.Intn(security.MaxUIDIndex) % security.MaxUIDIndex) + 1

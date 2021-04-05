@@ -1,8 +1,8 @@
 package security
 
 import (
-	"packs"
-	"packs/Players"
+	"packs/operations"
+	"packs/players"
 	"strconv"
 )
 
@@ -15,7 +15,7 @@ import (
 // obtain a value of it.
 type wotoConfiguration struct {
 	UIDKeyName	[MaxUIDIndex]string
-	LastUID		[MaxUIDIndex]Players.UID
+	LastUID		[MaxUIDIndex]players.UID
 }
 
 const (
@@ -48,23 +48,23 @@ func GetWotoConfig() *wotoConfiguration {
 	}
 	_w := wotoConfiguration{
 		UIDKeyName: [MaxUIDIndex]string{},
-		LastUID:    [MaxUIDIndex]Players.UID{},
+		LastUID:    [MaxUIDIndex]players.UID{},
 	}
 	for i := BaseUIDIndex - UIDIndexOffSet;
 				i <= MaxUIDIndex - UIDIndexOffSet; i++ {
 		_w.UIDKeyName[i] = UIDIndexSuffix + strconv.Itoa(i + OffSetTokenParts)
-		_w.LastUID[i] = Players.GetMinimumUID(uint8(i + OffSetTokenParts))
+		_w.LastUID[i] = players.GetMinimumUID(uint8(i + OffSetTokenParts))
 	}
 	return &_w
 }
 
-func (_w *wotoConfiguration) UpdateUIDsInServer(_index uint8) packs.RESULT {
+func (_w *wotoConfiguration) UpdateUIDsInServer(_index uint8) operations.RESULT {
 	_w.LastUID[_index - UIDIndexOffSet].GoUp()
 	return _client.UpdateLastUIDConfiguration(_index, _w)
 }
 
 func (_w *wotoConfiguration) SetUIDKeys() {
-	_w.LastUID = [MaxUIDIndex]Players.UID{}
+	_w.LastUID = [MaxUIDIndex]players.UID{}
 	for i := BaseUIDIndex - UIDIndexOffSet;
 					i <= MaxUIDIndex - UIDIndexOffSet; i++ {
 		_w.UIDKeyName[i] = UIDIndexSuffix + strconv.Itoa(i + OffSetTokenParts)

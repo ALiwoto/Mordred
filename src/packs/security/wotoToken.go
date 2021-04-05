@@ -22,18 +22,23 @@ const (
 type wotoToken string
 
 func GenerateNewWotoToken() *wotoToken {
-	//rand.Seed(time.Now().UnixNano())
+	/*
+	 * we don't need to create a new seed for random numbers,
+	 * using rand.Seed(time.Now().UnixNano()) function.
+	 * I suggest don't use it anyway, because rand.Intn() function
+	 * will do its work perfectly!
+	 */
 	total := EMPTY
 	_rand := (rand.Intn(MaxIntFirstTokenNumPart) % MaxIntFirstTokenNumPart) + OffSetTokenParts
 	total += strconv.Itoa(_rand)
 	for i := BaseTokenPart; i < MaxTokenParts; i++ {
 		_rand = (rand.Intn(MaxIntTokenPart) % MaxIntTokenPart) + OffSetTokenParts
-		total += FixNum(int64(_rand))
+		total += fixNum(int64(_rand))
 	}
 	_w := wotoToken(total)
 	return &_w
 }
-func FixNum(_num int64) string {
+func fixNum(_num int64) string {
 	_str := strconv.FormatInt(_num, BaseConverting)
 	if len(_str) < MaxLengthTokenPart {
 		_offSet := MaxLengthTokenPart - len(_str)
