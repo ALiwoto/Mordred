@@ -50,8 +50,12 @@ func (_m *MordredConfig) _setValues() RESULT {
 		log.Fatal(errors.ConfigFileError)
 	}
 	_m._full = &_value
-	_m._serialized = Deserialize(_m._full)
-	_result := _m._setDBConfig()
+	_ser, _result := Deserialize(_m._full)
+	if _result != SUCCESS {
+		return _result
+	}
+	_m._serialized = _ser
+	_result = _m._setDBConfig()
 	if _result != SUCCESS {
 		return _result
 	}
