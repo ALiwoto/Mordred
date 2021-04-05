@@ -1,6 +1,7 @@
 package security
 
 import (
+	"packs/operations"
 	"strconv"
 	"strings"
 )
@@ -83,6 +84,35 @@ func ConvertToString(_b []rune) string {
 		_total += string(_current - StrongOffSet)
 	}
 	return _total
+}
+
+func Split(_s string, separator ...string) []string {
+	if len(separator) == operations.BaseIndex {
+		return nil
+	}
+	_firstSet := false
+	var(
+		_shallow   string
+		_myStrings []string
+	)
+	for _, _current := range separator {
+		if strings.Contains(_s, _current) {
+			if !_firstSet {
+				_myStrings = strings.Split(_s, _current)
+				_myStrings = FixSplit(_myStrings)
+				_firstSet = true
+				continue
+			}
+			_shallow = strings.Join(_myStrings, EMPTY)
+			_myStrings	= strings.Split(_shallow, _current)
+			_myStrings	= FixSplit(_myStrings)
+		}
+	}
+	if !_firstSet {
+		_myStrings = make([]string, BaseUIDIndex)
+		_myStrings[BaseUIDIndex] = _s
+	}
+	return _myStrings
 }
 
 // FixSplit will fix the bullshit bug in the
